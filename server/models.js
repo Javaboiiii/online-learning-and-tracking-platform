@@ -1,18 +1,26 @@
 import mongoose from 'mongoose'; 
+import { nanoid } from 'nanoid';
 
 const d = new Date();
 
 const courseSchema = new mongoose.Schema({ 
+    courseId : { 
+        type: String,
+        required: true,
+        default: () => nanoid(7),
+        index: { unique: true },
+    },
     name : { 
         type: String, 
         required: true,
         unique: true
     }, 
-    price : {
+    madeBy: {
         type: String, 
-        required: true
+        required: true , 
+        ref: 'User'
     },
-    createdBy : {
+    price : {
         type: String, 
         required: true
     },
@@ -27,6 +35,13 @@ const courseSchema = new mongoose.Schema({
     }
 })
 
-const Courses = mongoose.model('Course', courseSchema);
+const userSchema = new mongoose.Schema({
+    userName: {
+        type: String,
+        required: true ,
+        unique: true
+    }
+})
 
-export default Courses 
+export const Courses = mongoose.model('Course', courseSchema);
+export const Users = mongoose.model('User', userSchema);
